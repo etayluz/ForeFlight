@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
-    var airports = ["KPWM", "KAUS"]
+    var airports = ["KPWM"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,12 +57,14 @@ class ViewController: UIViewController {
                         print("Invalid airport: " + airport)
                         DispatchQueue.main.async {
                             self.searchTextField.text?.removeAll()
-                            self.invalidAirportAlert(airport: airport)
+                            self.presentInvalidAirportAlert(airport: airport)
                         }
                         
                     } else {
                         DispatchQueue.main.async {
-                            self.airports.append(airport)
+                            if !self.airports.contains(airport) {
+                                self.airports.append(airport)
+                            }
                             self.tableView.reloadData()
                         }
                     }
@@ -76,8 +78,16 @@ class ViewController: UIViewController {
         // Fire off data task
         dataTask.resume()
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "weatherReportSegue" {
+            if let weatherReportVC = segue.destination as? WeatherReportVC {
+                weatherReportVC.reportTextView.text = "Example"
+            }
+        }
+    }
     
-    func invalidAirportAlert(airport: String)
+    func presentInvalidAirportAlert(airport: String)
     {
         let message = airport + " is an invalid airport"
         
@@ -103,10 +113,13 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: "weatherReportSegue", sender: self)
-        print("you tapped me")
+        let airport = airports[indexPath.row]
+        getWeatherReport(airport: airport)
+//        print("you tapped me")
     }
 }
+
+
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
