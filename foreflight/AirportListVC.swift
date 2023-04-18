@@ -14,6 +14,7 @@ class AirportListVC: UIViewController {
 
     var report: Report?
     var coreDataService: CoreDataService!
+    var fetchReportService: FetchReportService!
     var reports: [Report] = []
     
     override func viewDidLoad() {
@@ -32,100 +33,6 @@ class AirportListVC: UIViewController {
         
     }
 
-
-    func getWeatherReport(airport: String) {
-        print(airport)
-        // URL
-        let url = URL(string: "https://qa.foreflight.com/weather/report/" + airport)
-        
-        guard url != nil else {
-            print("Error creating URL object")
-            return
-        }
-        
-        // HRL Request
-        var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10)
-        
-        // Specify the headers
-        let headers = ["ff-coding-exercise": "1"]
-        request.allHTTPHeaderFields = headers
-        
-        // Set the request type
-        request.httpMethod = "GET"
-        
-        // Get the URLSession
-        let session = URLSession.shared
-
-        // Create the data task
-        let dataTask = session.dataTask(with: request) { (data, response, error) in
-            
-            if error == nil && data != nil {
-                // Try to parse out the data
-                do {
-                    let dictionary = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String: Any]
-//                    print(dictionary!)
-                    if dictionary!["error"] != nil {
-                        print("Invalid airport: " + airport)
-                        DispatchQueue.main.async {
-                            self.searchTextField.text?.removeAll()
-                            self.presentInvalidAirportAlert(airport: airport)
-                        }
-                    } else {
-                        guard let dictionary = dictionary else {
-                            print("Error with data")
-                            return
-                        }
-//                        let newReport = Report(context: self.context)
-//                        newReport.airport = airport
-//
-//                        if let report = dictionary["report"] as? JSONDictionary {
-//                //            print(report)
-//                            if let conditions = report["conditions"] as? JSONDictionary {
-//                //                print(conditions)
-//                                let jsonData = try? JSONSerialization.data(withJSONObject: conditions, options: [])
-//                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
-//                                    newReport.conditions = jsonString
-//                                }
-//                            }
-//                            if let forecast = report["forecast"] as? JSONDictionary {
-//                //                print(forecast)
-//                                let jsonData = try? JSONSerialization.data(withJSONObject: forecast, options: [])
-//                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
-//                                    newReport.forecast = jsonString
-//                                }
-//                            }
-//                        }
-                        
-                        // Save the data
-//                        do {
-//                            try self.context.save()
-//                        }
-//                        catch {
-//
-//                        }
-                        
-                        // Re-fetch the data
-//                        self.fetchReports()
-                        
-//                        DispatchQueue.main.async {
-//                            if !self.airports.contains(airport) {
-//                                self.airports.append(airport)
-//                                self.tableView.reloadData()
-//                            }
-//
-//                            self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
-//                        }
-                    }
-                }
-                catch {
-                    print("Error parsing response data")
-                }
-            }
-        }
-        
-        // Fire off data task
-        dataTask.resume()
-    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "WeatherReportSegue" {
@@ -158,23 +65,23 @@ class AirportListVC: UIViewController {
     }
 
     @IBAction func didTapSubmitButton(_ sender: Any) {
-        let airport = searchTextField.text!.uppercased()
-//        print(searchText)
-        // Check if airport is already saved
-//        print(self.reports!)
-        
-        var airportExists = false
-        for report in self.reports {
-            if report.airport == airport {
-                print(report)
-                airportExists = true
-            }
-            
-        }
-        
-        if (!airportExists) {
-            self.getWeatherReport(airport: airport)
-        }
+//        let airport = searchTextField.text!.uppercased()
+////        print(searchText)
+//        // Check if airport is already saved
+////        print(self.reports!)
+//
+//        var airportExists = false
+//        for report in self.reports {
+//            if report.airport == airport {
+//                print(report)
+//                airportExists = true
+//            }
+//
+//        }
+//
+//        if (!airportExists) {
+//            self.getWeatherReport(airport: airport)
+//        }
         self.searchTextField.text?.removeAll()
     }
 

@@ -11,5 +11,7 @@ import CoreData
 
 @objc(Report)
 public class Report: NSManagedObject {
+    
+    
 
 }

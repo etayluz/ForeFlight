@@ -20,7 +20,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let airportListVC = storyboard.instantiateViewController(withIdentifier: "AirportListVC") as! AirportListVC
-        airportListVC.coreDataService = CoreDataService() // inject the service into the view controller
+        let coreDataService = CoreDataService()
+        let fetchReportSerivce = FetchReportService(coreDataService: coreDataService)
+        
+        airportListVC.coreDataService = coreDataService // inject the service into the view controller
+        airportListVC.fetchReportService = fetchReportSerivce // inject the service into the view controller
         
         if let windowScene = scene as? UIWindowScene {
              let window = UIWindow(windowScene: windowScene)
