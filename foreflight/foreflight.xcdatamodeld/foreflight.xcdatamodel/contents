@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E252" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Report" representedClassName="Report" syncable="YES" codeGenerationType="class">
         <attribute name="airport" optional="YES" attributeType="String"/>
-        <attribute name="report" optional="YES" attributeType="Binary"/>
+        <attribute name="conditions" optional="YES" attributeType="String"/>
+        <attribute name="forecast" optional="YES" attributeType="String"/>
     </entity>
 </model>

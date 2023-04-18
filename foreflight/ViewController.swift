@@ -81,17 +81,48 @@ class ViewController: UIViewController {
                             self.searchTextField.text?.removeAll()
                             self.presentInvalidAirportAlert(airport: airport)
                         }
-                        
                     } else {
                         self.reportDic = dictionary!
-                        DispatchQueue.main.async {
-                            if !self.airports.contains(airport) {
-                                self.airports.append(airport)
-                                self.tableView.reloadData()
+                        let newReport = Report(context: self.context)
+                        newReport.airport = airport
+                        
+                        if let report = self.reportDic["report"] as? JSONDictionary {
+                //            print(report)
+                            if let conditions = report["conditions"] as? JSONDictionary {
+                //                print(conditions)
+                                let jsonData = try? JSONSerialization.data(withJSONObject: conditions, options: [])
+                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
+                                    newReport.conditions = jsonString
+                                }
                             }
-                            
-                            self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
+                            if let forecast = report["forecast"] as? JSONDictionary {
+                //                print(forecast)
+                                let jsonData = try? JSONSerialization.data(withJSONObject: forecast, options: [])
+                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
+                                    newReport.forecast = jsonString
+                                }
+                            }
                         }
+                        
+                        // Save the data
+                        do {
+                            try self.context.save()
+                        }
+                        catch {
+                            
+                        }
+                        
+                        // Re-fetch the data
+                        self.fetchReports()
+                        
+//                        DispatchQueue.main.async {
+//                            if !self.airports.contains(airport) {
+//                                self.airports.append(airport)
+//                                self.tableView.reloadData()
+//                            }
+//
+//                            self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
+//                        }
                     }
                 }
                 catch {
@@ -149,12 +180,15 @@ extension ViewController: UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return airports.count
+        return self.reports!.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = airports[indexPath.row]
+        if let reports = self.reports {
+            cell.textLabel?.text = reports[indexPath.row].airport
+        }
+
         return cell
     }
 }
