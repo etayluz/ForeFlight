@@ -43,17 +43,20 @@ class FetchReportService {
             let (data, _) = try await session.data(for: request)
             
             // Try to parse out the data
-            let dictionary = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
+            let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
             //                    print(dictionary!)
-            if dictionary!["error"] != nil {
+            if json!["error"] != nil {
                 print("Invalid airport: " + airport)
                 return nil
                 
             } else {
-                guard let dictionary = dictionary else {
+                guard let json = json else {
                     print("Error with data")
                     return nil
                 }
+                
+                let report = coreDataService.reportFromJson(airport, json)
+                return report
             }
         }
         catch {
@@ -104,7 +107,19 @@ class FetchReportService {
 //
 //                            self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
 
-//                        DispatchQueue.main.async {
-////                            self.searchTextField.text?.removeAll()
-//                            self.presentInvalidAirportAlert(airport: airport)
-//                        }
+//                        
+//        // Check if airport is already saved
+////        print(self.reports!)
+//
+//        var airportExists = false
+//        for report in self.reports {
+//            if report.airport == airport {
+//                print(report)
+//                airportExists = true
+//            }
+//
+//        }
+//
+//        if (!airportExists) {
+//            self.getWeatherReport(airport: airport)
+//        }

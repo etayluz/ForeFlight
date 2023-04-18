@@ -65,24 +65,18 @@ class AirportListVC: UIViewController {
     }
 
     @IBAction func didTapSubmitButton(_ sender: Any) {
-//        let airport = searchTextField.text!.uppercased()
+        let airport = searchTextField.text!.uppercased()
 ////        print(searchText)
-//        // Check if airport is already saved
-////        print(self.reports!)
-//
-//        var airportExists = false
-//        for report in self.reports {
-//            if report.airport == airport {
-//                print(report)
-//                airportExists = true
-//            }
-//
-//        }
-//
-//        if (!airportExists) {
-//            self.getWeatherReport(airport: airport)
-//        }
+
         self.searchTextField.text?.removeAll()
+        Task {
+            let report = await self.fetchReportService.getReport(airport: airport)
+            if report == nil {
+                DispatchQueue.main.async {
+                    self.presentInvalidAirportAlert(airport: airport)
+                }
+            }
+        }
     }
 
 }

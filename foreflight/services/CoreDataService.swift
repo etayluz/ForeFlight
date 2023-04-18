@@ -40,5 +40,11 @@ class CoreDataService {
             print(error)
         }
     }
+    
+    func reportFromJson(_ airport: String, _ json: [String: Any]) -> Report {
+        let report = Report()
+        report.airport = airport
+        return report
+    }
 
 }
