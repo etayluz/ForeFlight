@@ -9,25 +9,33 @@
 /* Begin PBXBuildFile section */
 		B476A73729EDC395007D29C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A73629EDC395007D29C5 /* AppDelegate.swift */; };
 		B476A73929EDC395007D29C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A73829EDC395007D29C5 /* SceneDelegate.swift */; };
-		B476A73B29EDC395007D29C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A73A29EDC395007D29C5 /* ViewController.swift */; };
+		B476A73B29EDC395007D29C5 /* AirportListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A73A29EDC395007D29C5 /* AirportListVC.swift */; };
 		B476A73E29EDC395007D29C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B476A73C29EDC395007D29C5 /* Main.storyboard */; };
 		B476A74129EDC395007D29C5 /* foreflight.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B476A73F29EDC395007D29C5 /* foreflight.xcdatamodeld */; };
 		B476A74329EDC399007D29C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B476A74229EDC399007D29C5 /* Assets.xcassets */; };
 		B476A74629EDC399007D29C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B476A74429EDC399007D29C5 /* LaunchScreen.storyboard */; };
 		B476A74E29EDEE67007D29C5 /* WeatherReportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A74D29EDEE67007D29C5 /* WeatherReportVC.swift */; };
+		B476A75A29EF2DE0007D29C5 /* Report+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A75829EF2DE0007D29C5 /* Report+CoreDataClass.swift */; };
+		B476A75B29EF2DE0007D29C5 /* Report+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A75929EF2DE0007D29C5 /* Report+CoreDataProperties.swift */; };
+		B476A75F29EF2F15007D29C5 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A75E29EF2F15007D29C5 /* CoreDataService.swift */; };
+		B476A76129EF2F51007D29C5 /* FetchReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B476A76029EF2F51007D29C5 /* FetchReportService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B476A73329EDC395007D29C5 /* foreflight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foreflight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B476A73629EDC395007D29C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B476A73829EDC395007D29C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B476A73A29EDC395007D29C5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B476A73A29EDC395007D29C5 /* AirportListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportListVC.swift; sourceTree = "<group>"; };
 		B476A73D29EDC395007D29C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B476A74029EDC395007D29C5 /* foreflight.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = foreflight.xcdatamodel; sourceTree = "<group>"; };
 		B476A74229EDC399007D29C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B476A74529EDC399007D29C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B476A74729EDC399007D29C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B476A74D29EDEE67007D29C5 /* WeatherReportVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherReportVC.swift; sourceTree = "<group>"; };
+		B476A75829EF2DE0007D29C5 /* Report+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B476A75929EF2DE0007D29C5 /* Report+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B476A75E29EF2F15007D29C5 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
+		B476A76029EF2F51007D29C5 /* FetchReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchReportService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,10 +68,11 @@
 		B476A73529EDC395007D29C5 /* foreflight */ = {
 			isa = PBXGroup;
 			children = (
-				B476A75329EF00FB007D29C5 /* model */,
+				B476A75D29EF2EF5007D29C5 /* services */,
+				B476A75C29EF2DE8007D29C5 /* model */,
 				B476A73629EDC395007D29C5 /* AppDelegate.swift */,
 				B476A73829EDC395007D29C5 /* SceneDelegate.swift */,
-				B476A73A29EDC395007D29C5 /* ViewController.swift */,
+				B476A73A29EDC395007D29C5 /* AirportListVC.swift */,
 				B476A74D29EDEE67007D29C5 /* WeatherReportVC.swift */,
 				B476A73C29EDC395007D29C5 /* Main.storyboard */,
 				B476A74229EDC399007D29C5 /* Assets.xcassets */,
@@ -74,11 +83,22 @@
 			path = foreflight;
 			sourceTree = "<group>";
 		};
-		B476A75329EF00FB007D29C5 /* model */ = {
+		B476A75C29EF2DE8007D29C5 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				B476A75829EF2DE0007D29C5 /* Report+CoreDataClass.swift */,
+				B476A75929EF2DE0007D29C5 /* Report+CoreDataProperties.swift */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		B476A75D29EF2EF5007D29C5 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				B476A75E29EF2F15007D29C5 /* CoreDataService.swift */,
+				B476A76029EF2F51007D29C5 /* FetchReportService.swift */,
+			);
+			path = services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,11 +172,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B476A73B29EDC395007D29C5 /* ViewController.swift in Sources */,
+				B476A75B29EF2DE0007D29C5 /* Report+CoreDataProperties.swift in Sources */,
+				B476A73B29EDC395007D29C5 /* AirportListVC.swift in Sources */,
 				B476A74129EDC395007D29C5 /* foreflight.xcdatamodeld in Sources */,
+				B476A76129EF2F51007D29C5 /* FetchReportService.swift in Sources */,
 				B476A73729EDC395007D29C5 /* AppDelegate.swift in Sources */,
+				B476A75F29EF2F15007D29C5 /* CoreDataService.swift in Sources */,
 				B476A73929EDC395007D29C5 /* SceneDelegate.swift in Sources */,
 				B476A74E29EDEE67007D29C5 /* WeatherReportVC.swift in Sources */,
+				B476A75A29EF2DE0007D29C5 /* Report+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

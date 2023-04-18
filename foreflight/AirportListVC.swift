@@ -7,42 +7,31 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class AirportListVC: UIViewController {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
 
     var report: Report?
+    var coreDataService: CoreDataService!
+    var reports: [Report] = []
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    // data for the table
-    var reports: [Report]?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Get items from Core Data
-        fetchReports()
-        
-    }
-
-    func fetchReports() {
-        
-        // Fetch the data from Core Data to display in the tableView
-        do {
-            self.reports = try context.fetch(Report.fetchRequest())
+        // Get reports from Core Data
+        Task {
+            self.reports = await coreDataService.fetchReports()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
-        catch {
-            
-        }
+        
     }
+
 
     func getWeatherReport(airport: String) {
         print(airport)
@@ -86,37 +75,37 @@ class ViewController: UIViewController {
                             print("Error with data")
                             return
                         }
-                        let newReport = Report(context: self.context)
-                        newReport.airport = airport
-                        
-                        if let report = dictionary["report"] as? JSONDictionary {
-                //            print(report)
-                            if let conditions = report["conditions"] as? JSONDictionary {
-                //                print(conditions)
-                                let jsonData = try? JSONSerialization.data(withJSONObject: conditions, options: [])
-                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
-                                    newReport.conditions = jsonString
-                                }
-                            }
-                            if let forecast = report["forecast"] as? JSONDictionary {
-                //                print(forecast)
-                                let jsonData = try? JSONSerialization.data(withJSONObject: forecast, options: [])
-                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
-                                    newReport.forecast = jsonString
-                                }
-                            }
-                        }
+//                        let newReport = Report(context: self.context)
+//                        newReport.airport = airport
+//
+//                        if let report = dictionary["report"] as? JSONDictionary {
+//                //            print(report)
+//                            if let conditions = report["conditions"] as? JSONDictionary {
+//                //                print(conditions)
+//                                let jsonData = try? JSONSerialization.data(withJSONObject: conditions, options: [])
+//                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
+//                                    newReport.conditions = jsonString
+//                                }
+//                            }
+//                            if let forecast = report["forecast"] as? JSONDictionary {
+//                //                print(forecast)
+//                                let jsonData = try? JSONSerialization.data(withJSONObject: forecast, options: [])
+//                                if let jsonString = String(data: jsonData!, encoding: .utf8) {
+//                                    newReport.forecast = jsonString
+//                                }
+//                            }
+//                        }
                         
                         // Save the data
-                        do {
-                            try self.context.save()
-                        }
-                        catch {
-                            
-                        }
+//                        do {
+//                            try self.context.save()
+//                        }
+//                        catch {
+//
+//                        }
                         
                         // Re-fetch the data
-                        self.fetchReports()
+//                        self.fetchReports()
                         
 //                        DispatchQueue.main.async {
 //                            if !self.airports.contains(airport) {
@@ -175,7 +164,7 @@ class ViewController: UIViewController {
 //        print(self.reports!)
         
         var airportExists = false
-        for report in self.reports! {
+        for report in self.reports {
             if report.airport == airport {
                 print(report)
                 airportExists = true
@@ -193,10 +182,10 @@ class ViewController: UIViewController {
 
 
 
-extension ViewController: UITableViewDelegate {
+extension AirportListVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.report = self.reports![indexPath.row]
+        self.report = self.reports[indexPath.row]
         self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
 //        let airport = airports
 //        getWeatherReport(airport: airport)
@@ -206,16 +195,14 @@ extension ViewController: UITableViewDelegate {
 
 
 
-extension ViewController: UITableViewDataSource {
+extension AirportListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.reports!.count
+        return self.reports.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        if let reports = self.reports {
-            cell.textLabel?.text = reports[indexPath.row].airport
-        }
+        cell.textLabel?.text = reports[indexPath.row].airport
 
         return cell
     }
