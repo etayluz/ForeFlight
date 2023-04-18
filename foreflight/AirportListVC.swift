@@ -23,15 +23,19 @@ class AirportListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Get reports from Core Data
+        getReportsFromCoreData()
+    }
+    
+    func getReportsFromCoreData() {
+        // Get reports from Core Data and refresh tableView
         Task {
             self.reports = await coreDataService.fetchReports()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
-        
     }
+    
 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -75,6 +79,8 @@ class AirportListVC: UIViewController {
                 DispatchQueue.main.async {
                     self.presentInvalidAirportAlert(airport: airport)
                 }
+            } else {
+                getReportsFromCoreData()
             }
         }
     }
