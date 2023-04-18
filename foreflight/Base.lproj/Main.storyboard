@@ -64,7 +64,7 @@
                     <connections>
                         <outlet property="searchTextField" destination="h4l-wR-hOE" id="pO0-cH-kTX"/>
                         <outlet property="tableView" destination="Ynl-fv-tFh" id="3AL-9V-DJg"/>
-                        <segue destination="wej-eX-R71" kind="show" identifier="weatherReportSegue" id="w65-W8-BXm"/>
+                        <segue destination="wej-eX-R71" kind="show" identifier="WeatherReportSegue" id="w65-W8-BXm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

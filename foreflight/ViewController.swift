@@ -13,7 +13,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
     
     var airports = ["KPWM"]
-
+    var reportDic = [String: Any]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,6 +25,7 @@ class ViewController: UIViewController {
     }
     
     func getWeatherReport(airport: String) {
+        print(airport)
         // URL
         let url = URL(string: "https://qa.foreflight.com/weather/report/" + airport)
         
@@ -52,7 +54,7 @@ class ViewController: UIViewController {
                 // Try to parse out the data
                 do {
                     let dictionary = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String: Any]
-                    print(dictionary!)
+//                    print(dictionary!)
                     if dictionary!["error"] != nil {
                         print("Invalid airport: " + airport)
                         DispatchQueue.main.async {
@@ -61,11 +63,14 @@ class ViewController: UIViewController {
                         }
                         
                     } else {
+                        self.reportDic = dictionary!
                         DispatchQueue.main.async {
                             if !self.airports.contains(airport) {
                                 self.airports.append(airport)
+                                self.tableView.reloadData()
                             }
-                            self.tableView.reloadData()
+                            
+                            self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
                         }
                     }
                 }
@@ -80,9 +85,9 @@ class ViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "weatherReportSegue" {
+        if segue.identifier == "WeatherReportSegue" {
             if let weatherReportVC = segue.destination as? WeatherReportVC {
-                weatherReportVC.reportTextView.text = "Example"
+                weatherReportVC.reportDic = self.reportDic
             }
         }
     }
@@ -101,9 +106,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func didTapSubmitButton(_ sender: Any) {
-        let searchText = searchTextField.text!
-        print(searchText)
+        let searchText = searchTextField.text!.uppercased()
+//        print(searchText)
         self.getWeatherReport(airport: searchText)
+        self.searchTextField.text?.removeAll()
     }
 
 }
