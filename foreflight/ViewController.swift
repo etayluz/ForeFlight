@@ -11,14 +11,14 @@ class ViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
+
+    var report: Report?
     
-    var airports = ["KPWM"]
-    var reportDic = [String: Any]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     // data for the table
     var reports: [Report]?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         fetchReports()
         
     }
-    
+
     func fetchReports() {
         
         // Fetch the data from Core Data to display in the tableView
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
             
         }
     }
-    
+
     func getWeatherReport(airport: String) {
         print(airport)
         // URL
@@ -82,11 +82,14 @@ class ViewController: UIViewController {
                             self.presentInvalidAirportAlert(airport: airport)
                         }
                     } else {
-                        self.reportDic = dictionary!
+                        guard let dictionary = dictionary else {
+                            print("Error with data")
+                            return
+                        }
                         let newReport = Report(context: self.context)
                         newReport.airport = airport
                         
-                        if let report = self.reportDic["report"] as? JSONDictionary {
+                        if let report = dictionary["report"] as? JSONDictionary {
                 //            print(report)
                             if let conditions = report["conditions"] as? JSONDictionary {
                 //                print(conditions)
@@ -138,11 +141,20 @@ class ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "WeatherReportSegue" {
             if let weatherReportVC = segue.destination as? WeatherReportVC {
-                weatherReportVC.reportDic = self.reportDic
+                if let forecast = self.report?.forecast {
+                    weatherReportVC.forecast = forecast
+                }
+                if let conditions = self.report?.conditions {
+                    weatherReportVC.conditions = conditions
+                }
+                if let airport = self.report?.airport {
+                    weatherReportVC.airport = airport
+                }
+                
             }
         }
     }
-    
+
     func presentInvalidAirportAlert(airport: String)
     {
         let message = airport + " is an invalid airport"
@@ -155,11 +167,25 @@ class ViewController: UIViewController {
                   })
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
     @IBAction func didTapSubmitButton(_ sender: Any) {
-        let searchText = searchTextField.text!.uppercased()
+        let airport = searchTextField.text!.uppercased()
 //        print(searchText)
-        self.getWeatherReport(airport: searchText)
+        // Check if airport is already saved
+//        print(self.reports!)
+        
+        var airportExists = false
+        for report in self.reports! {
+            if report.airport == airport {
+                print(report)
+                airportExists = true
+            }
+            
+        }
+        
+        if (!airportExists) {
+            self.getWeatherReport(airport: airport)
+        }
         self.searchTextField.text?.removeAll()
     }
 
@@ -170,8 +196,10 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let airport = airports[indexPath.row]
-        getWeatherReport(airport: airport)
+        self.report = self.reports![indexPath.row]
+        self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
+//        let airport = airports
+//        getWeatherReport(airport: airport)
 //        print("you tapped me")
     }
 }
@@ -192,16 +220,3 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 }
-
-//extension ViewController {
-//    func save(value:String) {
-//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//            let context = appDelegate.persistentContainer.viewContext
-//            
-//            guard let entityDescription = NSEntityDescription.entity(forEntityName: "foreflight", in: context) else {
-//                return
-//            }
-//            
-//        }
-//    }
-//}
