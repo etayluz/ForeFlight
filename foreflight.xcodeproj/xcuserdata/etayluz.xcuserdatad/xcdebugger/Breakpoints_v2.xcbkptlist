@@ -3,4 +3,54 @@
    uuid = "3C8271E7-CA77-499A-B440-8A5E56945834"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BFAD62FF-FA55-437A-A505-7BC6169525B1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "foreflight/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "fetchReports()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BFAD62FF-FA55-437A-A505-7BC6169525B1 - 208b6449eb78dd92"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "foreflight.ViewController.fetchReports() -&gt; ()"
+                  moduleName = "foreflight"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etayluz/apps/foreflight/foreflight/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "325">
+               </Location>
+               <Location
+                  uuid = "BFAD62FF-FA55-437A-A505-7BC6169525B1 - 83f11b46542e519b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in foreflight.ViewController.fetchReports() -&gt; ()"
+                  moduleName = "foreflight"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etayluz/apps/foreflight/foreflight/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "33">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

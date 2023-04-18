@@ -22,14 +22,14 @@ class WeatherReportVC: UIViewController {
         if let report = reportDic["report"] as? JSONDictionary {
 //            print(report)
             if let conditions = report["conditions"] as? JSONDictionary {
-                print(conditions)
+//                print(conditions)
                 let jsonData = try? JSONSerialization.data(withJSONObject: conditions, options: [])
                 if let jsonString = String(data: jsonData!, encoding: .utf8) {
                     conditionsString = jsonString
                 }
             }
             if let forecast = report["forecast"] as? JSONDictionary {
-                print(forecast)
+//                print(forecast)
                 let jsonData = try? JSONSerialization.data(withJSONObject: forecast, options: [])
                 if let jsonString = String(data: jsonData!, encoding: .utf8) {
                     forcastString = jsonString

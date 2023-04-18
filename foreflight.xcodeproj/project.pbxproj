@@ -60,6 +60,7 @@
 		B476A73529EDC395007D29C5 /* foreflight */ = {
 			isa = PBXGroup;
 			children = (
+				B476A75329EF00FB007D29C5 /* model */,
 				B476A73629EDC395007D29C5 /* AppDelegate.swift */,
 				B476A73829EDC395007D29C5 /* SceneDelegate.swift */,
 				B476A73A29EDC395007D29C5 /* ViewController.swift */,
@@ -71,6 +72,13 @@
 				B476A73F29EDC395007D29C5 /* foreflight.xcdatamodeld */,
 			);
 			path = foreflight;
+			sourceTree = "<group>";
+		};
+		B476A75329EF00FB007D29C5 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

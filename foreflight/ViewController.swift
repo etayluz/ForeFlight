@@ -14,14 +14,34 @@ class ViewController: UIViewController {
     
     var airports = ["KPWM"]
     var reportDic = [String: Any]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    // data for the table
+    var reports: [Report]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
-//        self.getWeatherReport(airport: "kpwm")
         
+        // Get items from Core Data
+        fetchReports()
+        
+    }
+    
+    func fetchReports() {
+        
+        // Fetch the data from Core Data to display in the tableView
+        do {
+            self.reports = try context.fetch(Report.fetchRequest())
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        catch {
+            
+        }
     }
     
     func getWeatherReport(airport: String) {
@@ -138,3 +158,16 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 }
+
+//extension ViewController {
+//    func save(value:String) {
+//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+//            let context = appDelegate.persistentContainer.viewContext
+//            
+//            guard let entityDescription = NSEntityDescription.entity(forEntityName: "foreflight", in: context) else {
+//                return
+//            }
+//            
+//        }
+//    }
+//}
