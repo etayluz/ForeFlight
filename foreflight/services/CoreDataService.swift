@@ -11,13 +11,14 @@ import CoreData
 
 class CoreDataService {
     
+//    let appDelegate = (UIApplication.shared.delegate as! AppDelegate)
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let persistentStoreCoordinator = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.persistentStoreCoordinator
     var reports: [Report]? // data for the table
     
     func fetchReports() async -> [Report] {
         
-        clearReports() // COMMENT ME OUT - ONLY USE DURING DEVELOPMENT
+        // clearReports() // COMMENT ME OUT - ONLY USE DURING DEVELOPMENT
         // Fetch the data from Core Data to display in the tableView
         do {
             self.reports = try context.fetch(Report.fetchRequest())
@@ -46,12 +47,14 @@ class CoreDataService {
         report.airport = airport
         report.parseJson(json)
         
+//        appDelegate.saveContext()
         do {
             try context.save()
         } catch {
             let nserror = error as NSError
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
+        
         
         return report
     }

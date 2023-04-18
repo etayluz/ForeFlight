@@ -75,6 +75,7 @@ class AirportListVC: UIViewController {
         self.searchTextField.text?.removeAll()
         Task {
             let report = await self.fetchReportService.getReport(airport: airport)
+            
             if report == nil {
                 DispatchQueue.main.async {
                     self.presentInvalidAirportAlert(airport: airport)
