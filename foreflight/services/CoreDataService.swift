@@ -42,8 +42,17 @@ class CoreDataService {
     }
     
     func reportFromJson(_ airport: String, _ json: [String: Any]) -> Report {
-        let report = Report()
+        let report = Report(context:context)
         report.airport = airport
+        report.parseJson(json)
+        
+        do {
+            try context.save()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
         return report
     }
 
