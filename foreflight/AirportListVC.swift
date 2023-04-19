@@ -27,8 +27,8 @@ class AirportListVC: UIViewController {
         
         // Initially populate airport list with KPWM & KAUS
         if self.reports.count == 0 {
-            getReport(airport: "KPWM")
-            getReport(airport: "KAUS")
+            getReport(airport: "KPWM", shouldShowReport: false)
+            getReport(airport: "KAUS", shouldShowReport: false)
         }
         
     }
@@ -90,14 +90,14 @@ class AirportListVC: UIViewController {
         
         getReport(airport: airport)
     }
-    
+
     /// Invoke the fetch Report service's getReport method on the airport
     /// Convert returned json into a Report NSMangedObject and persist it in Core Data
     /// Refresh tableView with call to getReportsFromCoreData
     ///
     /// - Parameters:
     ///     - airport: the  airport name to query against API
-    func getReport(airport: String) {
+    func getReport(airport: String, shouldShowReport: Bool = true) {
         Task {
             let reportJson = await self.fetchReportService.getReport(airport: airport)
             
@@ -112,6 +112,12 @@ class AirportListVC: UIViewController {
                 
                 // Get all reports from core data and refresh TableView
                 getReportsFromCoreData()
+                self.selectedReport = report
+                if shouldShowReport {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
+                    }
+                }
             }
         }
     }
@@ -126,7 +132,6 @@ extension AirportListVC: UITableViewDelegate {
         self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
     }
 }
-
 
 
 extension AirportListVC: UITableViewDataSource {
