@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coreDataService.context = context
         coreDataService.persistentStoreCoordinator = persistentStoreCoordinator
         
-        let fetchReportSerivce = FetchReportService(coreDataService: coreDataService)
+        let fetchReportSerivce = FetchReportService()
         
         airportListVC.coreDataService = coreDataService // inject the service into the view controller
         airportListVC.fetchReportService = fetchReportSerivce // inject the service into the view controller

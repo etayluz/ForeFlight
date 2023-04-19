@@ -9,12 +9,6 @@ import Foundation
 
 class FetchReportService {
     
-    var coreDataService: CoreDataService!
-    
-    init(coreDataService: CoreDataService) {
-        self.coreDataService = coreDataService
-    }
-    
     func getReport(airport: String) async -> [String: Any]? {
         print(airport)
         // URL

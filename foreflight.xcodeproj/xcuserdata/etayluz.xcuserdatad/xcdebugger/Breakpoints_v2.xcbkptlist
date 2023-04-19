@@ -3,4 +3,69 @@
    uuid = "3C8271E7-CA77-499A-B440-8A5E56945834"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A8A8F433-0296-4F3C-A6CE-578D88A4011B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "foreflight/AirportListVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "getReport(airport:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A8A8F433-0296-4F3C-A6CE-578D88A4011B - eceba25bac12ead6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async -&gt; () in foreflight.AirportListVC.getReport(airport: Swift.String) -&gt; ()"
+                  moduleName = "foreflight"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etayluz/apps/foreflight/foreflight/AirportListVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "77">
+               </Location>
+               <Location
+                  uuid = "A8A8F433-0296-4F3C-A6CE-578D88A4011B - f87de7e2d46c2ae7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #1 @Sendable () async -&gt; () in foreflight.AirportListVC.getReport(airport: Swift.String) -&gt; ()"
+                  moduleName = "foreflight"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etayluz/apps/foreflight/foreflight/AirportListVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "37">
+               </Location>
+               <Location
+                  uuid = "A8A8F433-0296-4F3C-A6CE-578D88A4011B - 743970f69aca2ed8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async -&gt; () in foreflight.AirportListVC.getReport(airport: Swift.String) -&gt; ()"
+                  moduleName = "foreflight"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etayluz/apps/foreflight/foreflight/AirportListVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "109">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

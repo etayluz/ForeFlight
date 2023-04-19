@@ -23,12 +23,14 @@ class AirportListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Initially populate airport list with KPWM & KAUS
-        getReport(airport: "KPWM")
-        getReport(airport: "KAUS")
-        
-        
         getReportsFromCoreData()
+        
+        // Initially populate airport list with KPWM & KAUS
+        if self.reports.count == 0 {
+            getReport(airport: "KPWM")
+            getReport(airport: "KAUS")
+        }
+        
     }
     
     /// Fetch all reports from core data and reload tableView
