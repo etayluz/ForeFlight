@@ -31,6 +31,14 @@ class AirportListVC: UIViewController {
             getReport(airport: "KAUS", shouldShowReport: false)
         }
         
+        // automatically fetches updates for listed airports at a regular interval
+        Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { timer in
+            for report in self.reports {
+                self.getReport(airport: report.airport!, shouldShowReport: false)
+            }
+            self.getReportsFromCoreData()
+        }
+        
     }
     
     /// Fetch all reports from core data and reload tableView
