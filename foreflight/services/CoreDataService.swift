@@ -18,7 +18,7 @@ class CoreDataService {
     
     func fetchReports() async -> [Report] {
         
-        // clearReports() // COMMENT ME OUT - ONLY USE DURING DEVELOPMENT
+//         clearReports() // COMMENT ME OUT - ONLY USE DURING DEVELOPMENT
         // Fetch the data from Core Data to display in the tableView
         do {
             self.reports = try context.fetch(Report.fetchRequest())
@@ -43,20 +43,49 @@ class CoreDataService {
     }
     
     func reportFromJson(_ airport: String, _ json: [String: Any]) -> Report {
+        
         let report = Report(context:context)
         report.airport = airport
         report.parseJson(json)
         
-//        appDelegate.saveContext()
-        do {
-            try context.save()
-        } catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-        
-        
         return report
     }
+    
+    func saveReport(newReport: Report) async {
+        // Delete any previous reports for this airport
+        let reports1 = await self.fetchReports()
+        print(reports1)
+        
+        context.performAndWait {
+            do {
+                deleteReport(airport: newReport.airport!)
+                try self.context.save()
+            }
+            catch {
+                
+            }
+        }
+        
+        let reports2 = await self.fetchReports()
+        print(reports2)
+
+    }
+
+    func deleteReport(airport: String) {
+        let fetchRequest = NSFetchRequest<Report>(entityName: "Report")
+        fetchRequest.predicate = NSPredicate(format: "airport = '\(airport)'")
+
+        do {
+            let result = try context.fetch(fetchRequest)
+            if result.count > 1 {
+                let managedObject = result[0]
+                context.delete(managedObject)
+            }
+
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
 
 }

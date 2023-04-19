@@ -56,6 +56,7 @@ class FetchReportService {
                 }
                 
                 let report = coreDataService.reportFromJson(airport, json)
+                await coreDataService.saveReport(newReport: report)
                 return report
             }
         }
