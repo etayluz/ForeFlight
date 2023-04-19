@@ -12,7 +12,7 @@ class AirportListVC: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
 
-    var report: Report?
+    var selectedReport: Report?
     var coreDataService: CoreDataService!
     var fetchReportService: FetchReportService!
     var reports: [Report] = []
@@ -41,13 +41,13 @@ class AirportListVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "WeatherReportSegue" {
             if let weatherReportVC = segue.destination as? WeatherReportVC {
-                if let forecast = self.report?.forecast {
+                if let forecast = self.selectedReport?.forecast {
                     weatherReportVC.forecast = forecast
                 }
-                if let conditions = self.report?.conditions {
+                if let conditions = self.selectedReport?.conditions {
                     weatherReportVC.conditions = conditions
                 }
-                if let airport = self.report?.airport {
+                if let airport = self.selectedReport?.airport {
                     weatherReportVC.airport = airport
                 }
                 
@@ -70,7 +70,6 @@ class AirportListVC: UIViewController {
 
     @IBAction func didTapSubmitButton(_ sender: Any) {
         let airport = searchTextField.text!.uppercased()
-////        print(searchText)
 
         self.searchTextField.text?.removeAll()
         Task {
@@ -89,15 +88,11 @@ class AirportListVC: UIViewController {
 }
 
 
-
 extension AirportListVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.report = self.reports[indexPath.row]
+        self.selectedReport = self.reports[indexPath.row]
         self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
-//        let airport = airports
-//        getWeatherReport(airport: airport)
-//        print("you tapped me")
     }
 }
 

@@ -13,23 +13,27 @@ class CoreDataService {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let persistentStoreCoordinator = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.persistentStoreCoordinator
-    var reports: [Report]? // data for the table
     
+    /// Fetches all reports from Core Data
+    ///
+    /// - Returns: Returns all reports from Core Data
     func fetchReports() async -> [Report] {
         
-//         clearReports() // COMMENT ME OUT - ONLY USE DURING DEVELOPMENT
+        // clearReports() // COMMENT OUT - ONLY USE DURING DEVELOPMENT to clear all reports
+        
         // Fetch the data from Core Data to display in the tableView
+        var reports: [Report] = [] // data for the table
         do {
-            self.reports = try context.fetch(Report.fetchRequest())
+            reports = try context.fetch(Report.fetchRequest())
         }
         catch {
             
         }
         
-        return self.reports!
+        return reports
     }
     
-    // This is a helper function to clear reports - used during development
+    /// A helper function to clear reports from Core Data - used during development
     func clearReports() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Report")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -40,11 +44,19 @@ class CoreDataService {
             print(error)
         }
     }
-    
+
+    /// parse out json for airport report and return NSManagedObject for new airport report
+    ///
+    /// - Parameters:
+    ///     - airport: Airport
+    ///     - json: report data
+    ///
+    /// - Returns: Creates a new Report NSManagedObject  for the given `airport` and json from API.
     func reportFromJson(_ airport: String, _ json: [String: Any]) -> Report {
         // Delete existing report for airport
         deleteReport(airport: airport)
 
+        // Create new report for airport
         let report = Report(context:context)
         report.airport = airport
         report.parseJson(json)
@@ -52,8 +64,9 @@ class CoreDataService {
         return report
     }
     
+    /// Persist context
+    ///
     func saveContext() async {
-        // Delete any previous reports for this airport
         context.performAndWait {
             do {
                 try self.context.save()
@@ -64,6 +77,11 @@ class CoreDataService {
         }
     }
 
+    /// Delete previous report for airport
+    ///
+    /// - Parameters:
+    ///     - airport: The airport to fetch report for
+    ///
     func deleteReport(airport: String) {
         let fetchRequest = NSFetchRequest<Report>(entityName: "Report")
         fetchRequest.predicate = NSPredicate(format: "airport = '\(airport)'")
