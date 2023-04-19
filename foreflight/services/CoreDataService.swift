@@ -43,6 +43,16 @@ class CoreDataService {
     }
     
     func reportFromJson(_ airport: String, _ json: [String: Any]) -> Report {
+        // Delete existing report for airport
+        context.performAndWait {
+            do {
+                deleteReport(airport: airport)
+                try self.context.save()
+            }
+            catch {
+                
+            }
+        }
         
         let report = Report(context:context)
         report.airport = airport
@@ -56,15 +66,6 @@ class CoreDataService {
         let reports1 = await self.fetchReports()
         print(reports1)
         
-        context.performAndWait {
-            do {
-                deleteReport(airport: newReport.airport!)
-                try self.context.save()
-            }
-            catch {
-                
-            }
-        }
         
         let reports2 = await self.fetchReports()
         print(reports2)
@@ -77,7 +78,7 @@ class CoreDataService {
 
         do {
             let result = try context.fetch(fetchRequest)
-            if result.count > 1 {
+            if result.count > 0 {
                 let managedObject = result[0]
                 context.delete(managedObject)
             }
