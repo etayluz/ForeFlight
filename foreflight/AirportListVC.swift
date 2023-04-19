@@ -34,26 +34,29 @@ class AirportListVC: UIViewController {
 
         // automatically fetches updates for listed airports at a regular interval
         let interval = 60.0 // 60 second interval
-        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
-            for report in self.reports {
-                self.getReport(airport: report.airport!, shouldShowReport: false)
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] timer in
+            if let reports = self?.reports {
+                for report in reports {
+                    self?.getReport(airport: report.airport!, shouldShowReport: false)
+                }
+                self?.getReportsFromCoreData()
             }
-            self.getReportsFromCoreData()
         }
         
     }
-    
+
     /// Fetch all reports from core data and reload tableView
     func getReportsFromCoreData() {
         // Get reports from Core Data and refresh tableView
-        Task {
-            self.reports = await coreDataService.fetchReports()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+        Task { [weak self] in
+            if let reports = await self?.coreDataService.fetchReports() {
+                self?.reports = reports
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             }
         }
     }
-    
 
     /// Initialize the Westher Report View Controller with report data conditions and forecast
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -108,27 +111,35 @@ class AirportListVC: UIViewController {
     /// - Parameters:
     ///     - airport: the  airport name to query against API
     func getReport(airport: String, shouldShowReport: Bool = true) {
-        Task {
-            let reportJson = await self.fetchReportService.getReport(airport: airport)
-            
-            if reportJson == nil {
+        Task { [weak self] in
+            if let reports = await self?.coreDataService.fetchReports() {
+                self?.reports = reports
                 DispatchQueue.main.async {
-                    self.presentInvalidAirportAlert(airport: airport)
-                }
-            } else {
-                // Create new report in Core Data and save it
-                let report = coreDataService.reportFromJson(airport, reportJson!)
-                await coreDataService.saveContext()
-                
-                // Get all reports from core data and refresh TableView
-                getReportsFromCoreData()
-                self.selectedReport = report
-                if shouldShowReport {
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
-                    }
+                    self?.tableView.reloadData()
                 }
             }
+            if let reportJson = await self?.fetchReportService.getReport(airport: airport) {
+                
+                // Create new report in Core Data and save it
+                let report = self?.coreDataService.reportFromJson(airport, reportJson)
+                await self?.coreDataService.saveContext()
+                
+                // Get all reports from core data and refresh TableView
+                self?.getReportsFromCoreData()
+                self?.selectedReport = report
+                if shouldShowReport {
+                    DispatchQueue.main.async {
+                        self?.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
+                    }
+                }
+                
+            } else {
+                DispatchQueue.main.async {
+                    self?.presentInvalidAirportAlert(airport: airport)
+                }
+            }
+            
+            
         }
     }
 

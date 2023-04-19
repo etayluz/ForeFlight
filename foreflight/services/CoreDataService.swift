@@ -71,13 +71,11 @@ class CoreDataService {
     /// Persist context
     ///
     func saveContext() async {
-        context.performAndWait {
-            do {
-                try self.context.save()
-            }
-            catch {
-                
-            }
+        do {
+            try self.context.save()
+        }
+        catch {
+            
         }
     }
 
