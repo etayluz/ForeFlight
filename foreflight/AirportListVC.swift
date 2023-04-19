@@ -26,6 +26,7 @@ class AirportListVC: UIViewController {
         getReportsFromCoreData()
     }
     
+    /// Fetch all reports from core data and reload tableView
     func getReportsFromCoreData() {
         // Get reports from Core Data and refresh tableView
         Task {
@@ -37,7 +38,7 @@ class AirportListVC: UIViewController {
     }
     
 
-
+    /// Initialize the Westher Report View Controller with report data conditions and forecast
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "WeatherReportSegue" {
             if let weatherReportVC = segue.destination as? WeatherReportVC {
@@ -55,6 +56,10 @@ class AirportListVC: UIViewController {
         }
     }
 
+    /// Alert user when airport entry is invalid
+    ///
+    /// - Parameters:
+    ///     - airport: the invalid airport name
     func presentInvalidAirportAlert(airport: String)
     {
         let message = airport + " is an invalid airport"
@@ -68,10 +73,23 @@ class AirportListVC: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
+    /// Alert user when airport entry is invalid
+    ///
+    /// - Parameters:
+    ///     - airport: the  airport name to query against API
     @IBAction func didTapSubmitButton(_ sender: Any) {
         let airport = searchTextField.text!.uppercased()
-
         self.searchTextField.text?.removeAll()
+        
+        getReport(airport: airport)
+    }
+    
+    /// Invoke the fetch Report service's getReport method on the airport
+    /// Refresh tableView with call to getReportsFromCoreData
+    ///
+    /// - Parameters:
+    ///     - airport: the  airport name to query against API
+    func getReport(airport: String) {
         Task {
             let report = await self.fetchReportService.getReport(airport: airport)
             
@@ -80,6 +98,7 @@ class AirportListVC: UIViewController {
                     self.presentInvalidAirportAlert(airport: airport)
                 }
             } else {
+                // Get all reports from core data and refresh TableView
                 getReportsFromCoreData()
             }
         }
