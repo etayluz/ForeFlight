@@ -56,7 +56,7 @@ class FetchReportService {
                 }
                 
                 let report = coreDataService.reportFromJson(airport, json)
-                await coreDataService.saveReport(newReport: report)
+                await coreDataService.saveContext()
                 return report
             }
         }
@@ -66,45 +66,3 @@ class FetchReportService {
         return nil
     }
 }
-
-
-//                        let newReport = Report(context: self.context)
-//                        newReport.airport = airport
-//
-//                       
-                        
-                        // Save the data
-//                        do {
-//                            try self.context.save()
-//                        }
-//                        catch {
-//
-//                        }
-                        
-                        // Re-fetch the data
-//                        self.fetchReports()
-                        
-//                        DispatchQueue.main.async {
-//                            if !self.airports.contains(airport) {
-//                                self.airports.append(airport)
-//                                self.tableView.reloadData()
-//                            }
-//
-//                            self.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
-
-//                        
-//        // Check if airport is already saved
-////        print(self.reports!)
-//
-//        var airportExists = false
-//        for report in self.reports {
-//            if report.airport == airport {
-//                print(report)
-//                airportExists = true
-//            }
-//
-//        }
-//
-//        if (!airportExists) {
-//            self.getWeatherReport(airport: airport)
-//        }

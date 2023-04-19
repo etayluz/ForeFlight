@@ -11,7 +11,6 @@ import CoreData
 
 class CoreDataService {
     
-//    let appDelegate = (UIApplication.shared.delegate as! AppDelegate)
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let persistentStoreCoordinator = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.persistentStoreCoordinator
     var reports: [Report]? // data for the table
@@ -44,16 +43,8 @@ class CoreDataService {
     
     func reportFromJson(_ airport: String, _ json: [String: Any]) -> Report {
         // Delete existing report for airport
-        context.performAndWait {
-            do {
-                deleteReport(airport: airport)
-                try self.context.save()
-            }
-            catch {
-                
-            }
-        }
-        
+        deleteReport(airport: airport)
+
         let report = Report(context:context)
         report.airport = airport
         report.parseJson(json)
@@ -61,15 +52,16 @@ class CoreDataService {
         return report
     }
     
-    func saveReport(newReport: Report) async {
+    func saveContext() async {
         // Delete any previous reports for this airport
-        let reports1 = await self.fetchReports()
-        print(reports1)
-        
-        
-        let reports2 = await self.fetchReports()
-        print(reports2)
-
+        context.performAndWait {
+            do {
+                try self.context.save()
+            }
+            catch {
+                
+            }
+        }
     }
 
     func deleteReport(airport: String) {
