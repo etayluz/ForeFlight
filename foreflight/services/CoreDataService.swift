@@ -69,7 +69,6 @@ class CoreDataService {
     }
     
     /// Persist context
-    ///
     func saveContext() async {
         do {
             try self.context.save()
