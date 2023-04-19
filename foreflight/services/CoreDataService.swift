@@ -19,7 +19,7 @@ class CoreDataService {
     /// - Returns: Returns all reports from Core Data
     func fetchReports() async -> [Report] {
         
-//         clearReports() // COMMENT OUT - ONLY USE DURING DEVELOPMENT to clear all reports
+        // clearReports() // COMMENT OUT - ONLY USE DURING DEVELOPMENT to clear all reports
         
         // Fetch the data from Core Data to display in the tableView
         var reports: [Report] = [] // data for the table
