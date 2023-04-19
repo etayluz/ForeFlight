@@ -22,39 +22,44 @@ class AirportListVC: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
+
         // Get all reports from core data and populate tableView
-        getReportsFromCoreData()
-        
-        // Initially populate airport list with KPWM & KAUS
-        if self.reports.count == 0 {
-            getReport(airport: "KPWM", shouldShowReport: false)
-            getReport(airport: "KAUS", shouldShowReport: false)
+        Task { [weak self] in
+            await self?.getReportsFromCoreData()
+            if self?.reports.count == 0 {
+                // Initially populate airport list with KPWM & KAUS
+                await self?.getReport(airport: "KPWM", shouldShowReport: false)
+                await self?.getReport(airport: "KAUS", shouldShowReport: false)
+                await self?.coreDataService.saveContext()
+                await self?.getReportsFromCoreData()
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
         }
 
         // automatically fetches updates for listed airports at a regular interval
-        let interval = 60.0 // 60 second interval
+        let interval = 10.0 // 10 second interval
         Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] timer in
             if let reports = self?.reports {
-                for report in reports {
-                    self?.getReport(airport: report.airport!, shouldShowReport: false)
+                Task { [weak self] in
+                    for report in reports {
+                        await self?.getReport(airport: report.airport!, shouldShowReport: false)
+                    }
+                    await self?.coreDataService.saveContext()
+                    await self?.getReportsFromCoreData()
                 }
-                self?.getReportsFromCoreData()
             }
         }
         
     }
 
     /// Fetch all reports from core data and reload tableView
-    func getReportsFromCoreData() {
-        // Get reports from Core Data and refresh tableView
-        Task { [weak self] in
-            if let reports = await self?.coreDataService.fetchReports() {
-                self?.reports = reports
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            }
+    func getReportsFromCoreData() async {
+        let reports = await self.coreDataService.fetchReports()
+        self.reports = reports
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
 
@@ -101,7 +106,11 @@ class AirportListVC: UIViewController {
         let airport = searchTextField.text!.uppercased()
         self.searchTextField.text?.removeAll()
         
-        getReport(airport: airport)
+        Task { [weak self] in
+            await self?.getReport(airport: airport)
+            await self?.coreDataService.saveContext()
+            await self?.getReportsFromCoreData()
+        }
     }
 
     /// Invoke the fetch Report service's getReport method on the airport
@@ -110,37 +119,27 @@ class AirportListVC: UIViewController {
     ///
     /// - Parameters:
     ///     - airport: the  airport name to query against API
-    func getReport(airport: String, shouldShowReport: Bool = true) {
-        Task { [weak self] in
-            if let reports = await self?.coreDataService.fetchReports() {
-                self?.reports = reports
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            }
-            if let reportJson = await self?.fetchReportService.getReport(airport: airport) {
+    func getReport(airport: String, shouldShowReport: Bool = true) async {
+//        Task { [weak self] in
+            if let reportJson = await self.fetchReportService.getReport(airport: airport) {
                 
                 // Create new report in Core Data and save it
-                let report = self?.coreDataService.reportFromJson(airport, reportJson)
-                await self?.coreDataService.saveContext()
-                
-                // Get all reports from core data and refresh TableView
-                self?.getReportsFromCoreData()
-                self?.selectedReport = report
+                let report = self.coreDataService.reportFromJson(airport, reportJson)
+                self.selectedReport = report
                 if shouldShowReport {
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
                         self?.performSegue(withIdentifier: "WeatherReportSegue", sender: nil)
                     }
                 }
                 
             } else {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.presentInvalidAirportAlert(airport: airport)
                 }
             }
             
             
-        }
+//        }
     }
 
 }
