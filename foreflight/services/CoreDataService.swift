@@ -20,15 +20,18 @@ class CoreDataService {
     /// - Returns: Returns all reports from Core Data
     func fetchReports() async -> [Report] {
         
-        // clearReports() // COMMENT OUT - ONLY USE DURING DEVELOPMENT to clear all reports
+//         clearReports() // COMMENT OUT - ONLY USE DURING DEVELOPMENT to clear all reports
         
         // Fetch the data from Core Data to display in the tableView
         var reports: [Report] = [] // data for the table
         do {
-            reports = try context.fetch(Report.fetchRequest())
+            let fetchRequest:NSFetchRequest<Report> = Report.fetchRequest()
+            let nameSort = NSSortDescriptor(key:"airport", ascending:true)
+            fetchRequest.sortDescriptors = [nameSort]
+            reports = try context.fetch(fetchRequest)
         }
         catch {
-            
+            print("cannot fetch results from core data")
         }
         
         return reports
