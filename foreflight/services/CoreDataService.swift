@@ -11,8 +11,9 @@ import CoreData
 
 class CoreDataService {
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    let persistentStoreCoordinator = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.persistentStoreCoordinator
+    // context and persistentStoreCoordinator are injected during CoreDataService creatin in SceneDelegate.swift
+    var context: NSManagedObjectContext!
+    var persistentStoreCoordinator: NSPersistentStoreCoordinator!
     
     /// Fetches all reports from Core Data
     ///

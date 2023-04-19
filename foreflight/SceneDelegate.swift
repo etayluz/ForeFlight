@@ -17,10 +17,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
-        
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let airportListVC = storyboard.instantiateViewController(withIdentifier: "AirportListVC") as! AirportListVC
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let persistentStoreCoordinator = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.persistentStoreCoordinator
+
         let coreDataService = CoreDataService()
+        coreDataService.context = context
+        coreDataService.persistentStoreCoordinator = persistentStoreCoordinator
+        
         let fetchReportSerivce = FetchReportService(coreDataService: coreDataService)
         
         airportListVC.coreDataService = coreDataService // inject the service into the view controller

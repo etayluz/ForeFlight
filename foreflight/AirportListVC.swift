@@ -90,19 +90,24 @@ class AirportListVC: UIViewController {
     }
     
     /// Invoke the fetch Report service's getReport method on the airport
+    /// Convert returned json into a Report NSMangedObject and persist it in Core Data
     /// Refresh tableView with call to getReportsFromCoreData
     ///
     /// - Parameters:
     ///     - airport: the  airport name to query against API
     func getReport(airport: String) {
         Task {
-            let report = await self.fetchReportService.getReport(airport: airport)
+            let reportJson = await self.fetchReportService.getReport(airport: airport)
             
-            if report == nil {
+            if reportJson == nil {
                 DispatchQueue.main.async {
                     self.presentInvalidAirportAlert(airport: airport)
                 }
             } else {
+                // Create new report in Core Data and save it
+                let report = coreDataService.reportFromJson(airport, reportJson!)
+                await coreDataService.saveContext()
+                
                 // Get all reports from core data and refresh TableView
                 getReportsFromCoreData()
             }

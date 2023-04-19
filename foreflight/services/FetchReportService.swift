@@ -15,7 +15,7 @@ class FetchReportService {
         self.coreDataService = coreDataService
     }
     
-    func getReport(airport: String) async -> Report? {
+    func getReport(airport: String) async -> [String: Any]? {
         print(airport)
         // URL
         let url = URL(string: "https://qa.foreflight.com/weather/report/" + airport)
@@ -54,10 +54,7 @@ class FetchReportService {
                     print("Error with data")
                     return nil
                 }
-                
-                let report = coreDataService.reportFromJson(airport, json)
-                await coreDataService.saveContext()
-                return report
+                return json
             }
         }
         catch {
