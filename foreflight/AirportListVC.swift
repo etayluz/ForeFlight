@@ -23,6 +23,7 @@ class AirportListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        // Get all reports from core data and populate tableView
         getReportsFromCoreData()
         
         // Initially populate airport list with KPWM & KAUS
@@ -30,9 +31,10 @@ class AirportListVC: UIViewController {
             getReport(airport: "KPWM", shouldShowReport: false)
             getReport(airport: "KAUS", shouldShowReport: false)
         }
-        
+
         // automatically fetches updates for listed airports at a regular interval
-        Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { timer in
+        let interval = 60.0 // 60 second interval
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
             for report in self.reports {
                 self.getReport(airport: report.airport!, shouldShowReport: false)
             }
